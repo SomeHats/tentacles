@@ -7,57 +7,43 @@
 
   var stage = new PIXI.Container();
 
-  var ropeLength = 1500,
-    ropePoints = 10,
-    headPoints = 0,
-    ropeInterval = ropeLength / ropePoints;
-  var points = [];
-  for (var i = 0; i < ropePoints; i++) {
-    points.push(new PIXI.Point(i * ropeInterval, 0));
+  var catContainer = new PIXI.Container();
+  var cats = [];
+
+  function addCat() {
+    var cat = new Cat('cats/1.png');
+
+    cat.scale.set(height / (Cat.CAT_LENGTH * rand(0.9, 1.3)));
+    cat.x = width / 4 + Math.random() * width * 0.5;
+    cat.y = height * 1.2;
+
+    if (cat.debug) cat.debug._size = 1 / cat.scale.x;
+
+    catContainer.addChild(cat);
+    cats.push(cat);
   }
 
-  var strip = new PIXI.mesh.Rope(PIXI.Texture.fromImage('cats/' + (window.location.search.replace('?', '') || 1) + '.png'), points);
-  strip.x = -ropeLength / 2;
+  for (var i = 0; i < 1; i++) {
+    addCat();
+  }
 
-  var stripContainer = new PIXI.Container();
-  stripContainer.rotation = -Math.PI / 2;
-  stripContainer.x = width / 2;
-  stripContainer.y = height / 2;
-  stripContainer.scale.set(height / (ropeLength - 200));
+  document.body.addEventListener('click', addCat, false);
 
-  stage.addChild(stripContainer);
-  stripContainer.addChild(strip);
+  stage.addChild(catContainer);
 
+  var lastT;
   function render() {
-    var t = performance.now();
-    for (var i = 0; i < ropePoints - headPoints; i++) {
-      var point = points[i];
-      point.y = 30 * Math.sin(t/100 + i);
-      point.x = i * ropeInterval + 40 * Math.cos(t/200 + i);
+    window.requestAnimationFrame(render);
+    if (!lastT) return lastT = performance.now();
+    var t = performance.now(),
+      dt = t - lastT;
+
+    for (var i = 0; i < cats.length; i++) {
+      cats[i].update(dt);
     }
-
-    if (headPoints) {
-      var neckBase = points[ropePoints - headPoints - 1],
-        neckTop = points[ropePoints - headPoints],
-        dx = neckTop.x - neckBase.x,
-        dy = neckTop.y - neckBase.y,
-        l = Math.sqrt(dx*dx + dy*dy);
-
-      dx *= ropeInterval / l;
-      dy *= ropeInterval / l;
-
-      for (var i = 0; i < headPoints; i++) {
-        var point = points[ropePoints - headPoints + i];
-        point.x = neckTop.x + dx*i;
-        point.y = neckTop.y + dy*i;
-      }
-    }
-
-    // stripContainer.x = (width / 2) + Math.sin(t / 250) * 30;
-    // stripContainer.y = (height / 2) + Math.cos(t / 250) * 20 + 70;
 
     renderer.render(stage);
-    window.requestAnimationFrame(render);
+    lastT = t;
   }
 
   render();
