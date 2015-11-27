@@ -2,7 +2,7 @@
   'use strict';
 
   Cat.CAT_LENGTH = 1500;
-  Cat.POINTS = 10;
+  Cat.POINTS = 15;
   Cat.HEAD_POINTS = 0;
   Cat.INTERVAL = Cat.CAT_LENGTH / Cat.POINTS;
 
@@ -28,14 +28,15 @@
     if (debug) {
       this.debug = new RopeDebug(this.points);
       this.addChild(this.debug);
+      this.rope.alpha = 0.3;
     }
 
     // controls
-    this._t = rand(-1000, 1000);
-    this.speedMultiplier = rand(1.1, 1.4);
+    this._t = rand(10000, 1000000);
+    this.speedMultiplier = rand(1.1, 1.3);
     this.speed = rand(0.0005, 0.0015);
     this.wiggleRange = rand(0.15, 0.3);
-    this.moveUpSpeed = rand(0.02, 0.1);
+    this.moveUpSpeed = rand(0.01, 0.05);
 
     this.yOffset = Cat.CAT_LENGTH;
   };

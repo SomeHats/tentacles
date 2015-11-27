@@ -11,7 +11,7 @@
   var cats = [];
 
   function addCat() {
-    var cat = new Cat('cats/1.png');
+    var cat = new Cat('cats/1.png', false);
 
     cat.scale.set(height / (Cat.CAT_LENGTH * rand(0.9, 1.3)));
     cat.x = width / 4 + Math.random() * width * 0.5;
