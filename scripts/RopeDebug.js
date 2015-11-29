@@ -32,9 +32,11 @@
         nextPoint = this.points[i+1];
 
       // Join points:
-      this.lineStyle(this._size, 0x00FFFF, 1);
-      this.moveTo(point.x, point.y);
-      this.lineTo(nextPoint.x, nextPoint.y);
+      if (i !== this.cutAt) {
+        this.lineStyle(this._size, 0x00FFFF, 1);
+        this.moveTo(point.x, point.y);
+        this.lineTo(nextPoint.x, nextPoint.y);
+      }
 
       // Spines:
       var angle = Math.atan2(point.y - nextPoint.y, nextPoint.x - point.x);
@@ -42,6 +44,10 @@
       this.moveTo(point.x + size * Math.sin(angle), point.y + size * Math.cos(angle));
       this.lineTo(point.x - size * Math.sin(angle), point.y - size * Math.cos(angle));
     }
+  };
+
+  RopeDebug.prototype.cut = function(idx) {
+    this.cutAt = idx;
   };
 
   exports.RopeDebug = RopeDebug;

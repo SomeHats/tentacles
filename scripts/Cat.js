@@ -28,7 +28,7 @@
     if (debug) {
       this.debug = new RopeDebug(this.points);
       this.addChild(this.debug);
-      this.rope.alpha = 0.3;
+      this.rope.alpha = 0.0;
     }
 
     // controls
