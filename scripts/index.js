@@ -15,7 +15,7 @@
     // var r = Math.random();
     // var name = r < 0.333 ? '1' : r < 0.667 ? 'craig' : 'daniel';
     // var cat = new Cat('cats/'+name+'.png', true);
-    var cat = new Cat('cats/1.png', false);
+    var cat = new Cat(Math.random() < 0.5 ? 'cats/1.png' : 'cats/2.png', false);
 
     cat.scale.set(height / (Cat.CAT_LENGTH * rand(0.9, 1.3)));
     cat.x = width / 4 + Math.random() * width * 0.5;
@@ -28,8 +28,8 @@
     window.cat = cat;
   }
 
-  for (var i = 0; i < 1; i++) {
-    addCat();
+  for (var i = 0; i < 10; i++) {
+    setTimeout(addCat, i * 1000);
   }
 
   stage.addChild(catContainer);
@@ -87,10 +87,10 @@
         //   });
         // }
 
-        console.log(intersectPoint);
-        if (intersectPoint) {
-          cat.debug.cut(j);
-        }
+        // console.log(intersectPoint);
+        // if (intersectPoint) {
+          // cat.debug.cut(j);
+        // }
       }
     }
 
