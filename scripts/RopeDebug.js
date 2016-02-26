@@ -1,4 +1,4 @@
-(function (exports) {
+window.RopeDebug = (function () {
   'use strict';
 
   RopeDebug.prototype = Object.create(PIXI.Graphics.prototype);
@@ -26,10 +26,10 @@
   };
 
   RopeDebug.prototype.drawSpine = function() {
-    var size = 50 * this._size;
+    var size = 20 * this._size;
     for (var i = 0, l = this.points.length - 1; i < l; i++) {
       var point = this.points[i],
-        nextPoint = this.points[i+1];
+          nextPoint = this.points[i+1];
 
       // Join points:
       if (i !== this.cutAt) {
@@ -50,5 +50,5 @@
     this.cutAt = idx;
   };
 
-  exports.RopeDebug = RopeDebug;
-}(window));
+  return RopeDebug;
+}());

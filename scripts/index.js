@@ -1,6 +1,13 @@
 (function (window) {
+  var Cat = window.Cat,
+      KnifeTrail = window.KnifeTrail,
+      rand = window.util.rand,
+      intersect = window.util.intersect;
+
+  var debug = false;
+
   var width = document.body.clientWidth,
-    height = document.body.clientHeight;
+      height = document.body.clientHeight;
 
   var renderer = PIXI.autoDetectRenderer(width, height);
   window.renderer = renderer;
@@ -15,7 +22,7 @@
     // var r = Math.random();
     // var name = r < 0.333 ? '1' : r < 0.667 ? 'craig' : 'daniel';
     // var cat = new Cat('cats/'+name+'.png', true);
-    var cat = new Cat(Math.random() < 0.5 ? 'cats/1.png' : 'cats/2.png', false);
+    var cat = new Cat(Math.random() < 0.5 ? 'cats/1.png' : 'cats/2.png', debug);
 
     cat.scale.set(height / (Cat.CAT_LENGTH * rand(0.9, 1.3)));
     cat.x = width / 4 + Math.random() * width * 0.5;
@@ -51,7 +58,7 @@
 
   // Head-cut-off-ing
   var headCutRequested = false,
-    cutX, cutY, lastX, lastY;
+      cutX, cutY, lastX, lastY;
 
   function requestHeadCut(x, y) {
     headCutRequested = true;
@@ -68,7 +75,7 @@
     }
 
     var point = new PIXI.Point(),
-      nextPoint = new PIXI.Point();
+        nextPoint = new PIXI.Point();
 
     for (var i = 0, l1 = cats.length; i < l1; i++) {
       var cat = cats[i];
@@ -78,19 +85,10 @@
 
         var intersectPoint = intersect(cutX, cutY, lastX, lastY, point.x, point.y, nextPoint.x, nextPoint.y);
 
-        // if (j === l2 - 1) {
-        //   console.log({
-        //     intersectPoint: intersectPoint,
-        //     cutX: cutX,
-        //     cutY: cutY,
-        //     lastX
-        //   });
-        // }
-
-        // console.log(intersectPoint);
-        // if (intersectPoint) {
-          // cat.debug.cut(j);
-        // }
+        if (intersectPoint) {
+          console.log(intersectPoint);
+          cat.debug.cut(j);
+        }
       }
     }
 
@@ -103,7 +101,7 @@
     window.requestAnimationFrame(render);
     if (!lastT) return lastT = performance.now();
     var t = performance.now(),
-      dt = t - lastT;
+        dt = t - lastT;
 
     for (var i = 0; i < cats.length; i++) {
       cats[i].update(dt);

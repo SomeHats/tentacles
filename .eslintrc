@@ -1,0 +1,21 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "PIXI": true
+  },
+  "rules": {
+    "indent": [2, 2, {
+      "SwitchCase": 1,
+      "VariableDeclarator": {
+        "var": 2,
+        "let": 2,
+        "const": 3
+      }
+    }],
+    "quotes": [2, "single"],
+    "no-unused-vars": [2, {"vars": "all"}]
+  }
+}

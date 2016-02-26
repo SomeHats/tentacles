@@ -1,5 +1,9 @@
-(function(exports) {
+window.KnifeTrail = (function(window) {
   'use strict';
+
+  var lerp = window.util.lerp,
+      distSq = window.util.distSq,
+      lerpVec = window.util.lerpVec;
 
   KnifeTrail.prototype = Object.create(PIXI.Graphics.prototype);
   KnifeTrail.prototype.constructor = KnifeTrail;
@@ -49,6 +53,6 @@
     }
   };
 
-  exports.KnifeTrail = KnifeTrail;
+  return KnifeTrail;
 
 }(window));

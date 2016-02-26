@@ -1,5 +1,9 @@
-(function (exports) {
+window.Cat = (function (window) {
   'use strict';
+
+  var RopeDebug = window.RopeDebug,
+      rand = window.util.rand,
+      lerp = window.util.lerp;
 
   Cat.CAT_LENGTH = 1500;
   Cat.POINTS = 15;
@@ -33,40 +37,46 @@
 
     // controls
     this._t = rand(10000, 1000000);
-    this.speedMultiplier = rand(1.1, 1.3);
-    this.speed = rand(0.0005, 0.0015);
+    this.wiggle = rand(0.0005, 0.0015);
+    this.wiggleMultiplier = rand(1.1, 1.3);
     this.wiggleRange = rand(0.15, 0.3);
+    this.stretch = rand(0.0005, 0.0015);
+    this.stretchMultiplier = rand(1.05, 1.2);
+    this.stretchRange = rand(0.15, 0.4);
     this.moveUpSpeed = rand(0.01, 0.05);
 
     this.yOffset = Cat.CAT_LENGTH;
-  };
+  }
 
   Cat.prototype.update = function(dt) {
     var t = this._t = this._t + dt;
 
-    var speed = this.speed;
+    var wiggle = this.wiggle;
     var angle = -Math.PI / 2;
+    var stretch = this.stretch;
     this.yOffset = lerp(this.yOffset, 0, this.moveUpSpeed);
 
     var lastX, lastY;
 
     for (var i = 0; i < Cat.POINTS; i++) {
       var point = this.points[i];
-      var localAngle = angle + this.wiggleRange * Math.sin(t * speed);
+      var localAngle = angle + this.wiggleRange * Math.sin(t * wiggle);
+      var localStretch = 1 + this.stretchRange * Math.sin(t * stretch);
 
       if (lastX != null) {
-        point.x = lastX + Cat.INTERVAL * Math.cos(angle);
-        point.y = lastY + Cat.INTERVAL * Math.sin(angle) + this.yOffset;
+        point.x = lastX + Cat.INTERVAL * localStretch * Math.cos(angle);
+        point.y = lastY + Cat.INTERVAL * localStretch * Math.sin(angle) + this.yOffset;
       }
 
       lastX = point.x;
       lastY = point.y;
       angle = localAngle;
-      speed = speed * this.speedMultiplier;
+      wiggle = wiggle * this.wiggleMultiplier;
+      stretch = stretch * this.stretchMultiplier;
     }
 
     if (this.debug) this.debug.update(dt);
   };
 
-  exports.Cat = Cat;
+  return Cat;
 }(window));
