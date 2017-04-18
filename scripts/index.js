@@ -5,6 +5,7 @@
       intersect = window.util.intersect;
 
   var debug = false;
+  var mccannaMode = window.location.search === '?mccanna-mode';
 
   var width = document.body.clientWidth,
       height = document.body.clientHeight;
@@ -17,12 +18,21 @@
 
   var catContainer = new PIXI.Container();
   var cats = [];
+  var mccannas = ['ben', 'george', 'will', 'lucy'].map(function (mcanna) {
+    return 'cats/' + mcanna + '.png';
+  });
 
-  function addCat() {
+  function sample(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  function addCat(cat) {
     // var r = Math.random();
     // var name = r < 0.333 ? '1' : r < 0.667 ? 'craig' : 'daniel';
     // var cat = new Cat('cats/'+name+'.png', true);
-    var cat = new Cat(Math.random() < 0.5 ? 'cats/1.png' : 'cats/2.png', debug);
+    if (!(cat instanceof Cat)) {
+      cat = new Cat(mccannaMode ? sample(mccannas) : (Math.random() < 0.5 ? 'cats/1.png' : 'cats/2.png'), debug);
+    }
 
     cat.scale.set(height / (Cat.CAT_LENGTH * rand(0.9, 1.3)));
     cat.x = width / 4 + Math.random() * width * 0.5;
@@ -35,8 +45,19 @@
     window.cat = cat;
   }
 
-  for (var i = 0; i < 10; i++) {
-    setTimeout(addCat, i * 1000);
+  if (mccannaMode) {
+    mccannas.forEach(function (mccanna, i) {
+      setTimeout(function () {
+        addCat(new Cat(mccanna, debug));
+      }, i * 1000);
+      setTimeout(function () {
+        addCat(new Cat(mccanna, debug));
+      }, (i + mccannas.length) * 1000);
+    });
+  } else {
+    for (var i = 0; i < 10; i++) {
+      setTimeout(addCat, i * 1000);
+    }
   }
 
   stage.addChild(catContainer);
