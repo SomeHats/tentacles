@@ -1,0 +1,24 @@
+{
+  "name": "catsnake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SomeHats/catsnake.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SomeHats/catsnake/issues"
+  },
+  "homepage": "https://github.com/SomeHats/catsnake#readme",
+  "dependencies": {
+    "serve": "^5.1.4"
+  }
+}
