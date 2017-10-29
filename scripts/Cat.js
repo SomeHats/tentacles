@@ -13,8 +13,8 @@ window.Cat = (function (window) {
   Cat.prototype = Object.create(PIXI.Container.prototype);
   Cat.prototype.constructor = Cat;
 
-  function Cat(url, debug) {
-    if (!(this instanceof Cat)) return new Cat(url, debug);
+  function Cat(texture, debug) {
+    if (!(this instanceof Cat)) return new Cat(texture, debug);
     PIXI.Container.call(this);
 
     // setup points to start off with
@@ -24,7 +24,7 @@ window.Cat = (function (window) {
     }
 
     // Create rope
-    this.texture = PIXI.Texture.fromImage(url);
+    this.texture = texture;
     this.rope = new PIXI.mesh.Rope(this.texture, this.points);
     this.addChild(this.rope);
 

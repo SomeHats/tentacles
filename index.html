@@ -9,11 +9,50 @@
         height: 100%;
         padding: 0;
         margin: 0;
+        background: black;
+        color: white;
+        font-family: monospace;
+        font-size: 18px;
+      }
+
+      .facePicker {
+        text-align: center;
+      }
+      h1 {
+        text-align: center;
+      }
+      video {
+        display: block;
+        margin: auto;
+        width: auto;
+        max-width: 100%;
+      }
+      button {
+        background: white;
+        color: black;
+        font: inherit;
+        border: none;
+        padding: 0.5rem 1rem;
       }
     </style>
   </head>
   <body>
+    <div class="loadingNotice">
+      <h1>Loading...</h1>
+    </div>
+    <div class="facePicker" style="display: none">
+      <h1>Take a selfie!</h1>
+      <p>the image will stay in your browser and not get uploaded anywhere</p>
+      <video width="600" height="400" preload autoplay loop muted></video>
+      <button style="display: none">Go!</button>
+    </div>
+    <div class="detectingNotice" style="display: none">
+      <h1>Detecting faces...</h1>
+    </div>
+
     <script src="scripts/lib/pixi.min.js"></script>
+    <script src="scripts/lib/tracking.min.js"></script>
+    <script src="scripts/lib/face-tracking.min.js"></script>
     <script src="scripts/util.js"></script>
     <script src="scripts/RopeDebug.js"></script>
     <script src="scripts/Cat.js"></script>
