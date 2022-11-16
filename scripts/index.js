@@ -1,5 +1,5 @@
-(function(window) {
-  'use strict';
+(function (window) {
+  "use strict";
 
   var Cat = window.Cat,
     KnifeTrail = window.KnifeTrail,
@@ -7,11 +7,11 @@
     intersect = window.util.intersect;
 
   var debug = false;
-  var button = document.querySelector('button');
-  var video = document.querySelector('video');
-  var loadingNotice = document.querySelector('.loadingNotice');
-  var facePicker = document.querySelector('.facePicker');
-  var detectingNotice = document.querySelector('.detectingNotice');
+  var button = document.querySelector("button");
+  var video = document.querySelector("video");
+  var loadingNotice = document.querySelector(".loadingNotice");
+  var facePicker = document.querySelector(".facePicker");
+  var detectingNotice = document.querySelector(".detectingNotice");
   var tentacleImg;
   var targetFaceWidth = 200;
   var faceImages;
@@ -19,77 +19,77 @@
   start();
 
   function start() {
-    tentacleImg = document.createElement('img');
-    tentacleImg.onload = function() {
+    tentacleImg = document.createElement("img");
+    tentacleImg.onload = function () {
       startFacePicker();
     };
-    tentacleImg.onerror = function() {
-      alert('cant load tentacles :(');
+    tentacleImg.onerror = function () {
+      alert("cant load tentacles :(");
     };
-    tentacleImg.src = 'cats/tentacle.png';
+    tentacleImg.src = "/tentacles/cats/tentacle.png";
   }
 
   function startFacePicker() {
-    loadingNotice.style.display = 'none';
-    facePicker.style.display = 'block';
+    loadingNotice.style.display = "none";
+    facePicker.style.display = "block";
 
     var stream;
     var frameImg;
 
     window.navigator.mediaDevices
       .getUserMedia({ video: true, auto: false })
-      .then(function(mediaStream) {
+      .then(function (mediaStream) {
         video.srcObject = mediaStream;
-        button.style.display = '';
+        button.style.display = "";
         stream = mediaStream;
       });
 
-    button.addEventListener('click', function() {
+    button.addEventListener("click", function () {
       captureFrame();
-      facePicker.style.display = 'none';
-      detectingNotice.style.display = 'block';
+      facePicker.style.display = "none";
+      detectingNotice.style.display = "block";
     });
 
     function stopStream() {
       if (stream.stop) {
         stream.stop();
       } else if (stream.getTracks) {
-        stream.getTracks().forEach(function(track) {
+        stream.getTracks().forEach(function (track) {
           track.stop();
         });
       }
     }
 
     function captureFrame() {
-      var canvas = document.createElement('canvas');
+      var canvas = document.createElement("canvas");
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      var ctx = canvas.getContext('2d');
+      var ctx = canvas.getContext("2d");
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      setTimeout(function() {
+      setTimeout(function () {
         var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        var tracker = new tracking.ObjectTracker(['face']);
+        var tracker = new tracking.ObjectTracker(["face"]);
         tracker.edgesDensity = 0.1;
         tracker.initialScale = 1;
         tracker.stepSize = 1;
 
         var found = false;
-        tracker.on('track', function(event) {
+        tracker.on("track", function (event) {
           var faces = event.data;
           if (faces && faces.length) {
             found = true;
             stopStream();
 
-            faceImages = faces.map(function(coords) {
+            faceImages = faces.map(function (coords) {
               return extractFace(coords, canvas);
             });
 
             startTentacles();
           } else {
-            alert('No faces found!');
-            facePicker.style.display = 'block';
-            detectingNotice.style.display = 'none';
+            alert("No faces found!");
+            facePicker.style.display = "block";
+            detectingNotice.style.display = "none";
           }
         });
 
@@ -107,25 +107,25 @@
       var left = coords.x - xOffs;
       var top = coords.y - yOffs;
 
-      var canvas = document.createElement('canvas');
+      var canvas = document.createElement("canvas");
       canvas.width = width * scaleFactor;
       canvas.height = height * scaleFactor;
-      var ctx = canvas.getContext('2d');
+      var ctx = canvas.getContext("2d");
 
       // ellipse to crop to:
       ctx.beginPath();
       ctx.ellipse(
-        width * scaleFactor / 2,
-        height * scaleFactor / 2,
-        width * scaleFactor / 2,
-        height * scaleFactor / 2,
+        (width * scaleFactor) / 2,
+        (height * scaleFactor) / 2,
+        (width * scaleFactor) / 2,
+        (height * scaleFactor) / 2,
         0,
         0,
-        Math.PI * 2,
+        Math.PI * 2
       );
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = "white";
       ctx.fill();
-      ctx.globalCompositeOperation = 'source-in';
+      ctx.globalCompositeOperation = "source-in";
       ctx.drawImage(
         source,
         left,
@@ -135,7 +135,7 @@
         0,
         0,
         width * scaleFactor,
-        height * scaleFactor,
+        height * scaleFactor
       );
 
       return canvas;
@@ -143,7 +143,7 @@
   }
 
   function startTentacles() {
-    detectingNotice.style.display = 'none';
+    detectingNotice.style.display = "none";
 
     var width = document.body.clientWidth,
       height = document.body.clientHeight;
@@ -158,7 +158,7 @@
     var container = new PIXI.Container();
     stage.addChild(container);
 
-    document.body.addEventListener('click', addCat, false);
+    document.body.addEventListener("click", addCat, false);
 
     for (var i = 0; i < 5; i++) {
       setTimeout(addCat, 1000 * (i + 1));
@@ -199,25 +199,25 @@
   }
 
   function createTentacle(face) {
-    var canvas = document.createElement('canvas');
+    var canvas = document.createElement("canvas");
     canvas.width = tentacleImg.naturalWidth;
     canvas.height = tentacleImg.naturalHeight;
-    var ctx = canvas.getContext('2d');
+    var ctx = canvas.getContext("2d");
 
     // draw image
     ctx.drawImage(tentacleImg, 0, 0);
 
     // tint
-    ctx.globalCompositeOperation = 'hue';
-    ctx.fillStyle = 'hsl(' + Math.floor(Math.random() * 360) + ', 100%, 50%)';
+    ctx.globalCompositeOperation = "hue";
+    ctx.fillStyle = "hsl(" + Math.floor(Math.random() * 360) + ", 100%, 50%)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // ensure correct alpha mask:
-    ctx.globalCompositeOperation = 'destination-in';
+    ctx.globalCompositeOperation = "destination-in";
     ctx.drawImage(tentacleImg, 0, 0);
 
     // add face
-    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalCompositeOperation = "source-over";
     ctx.rotate(Math.PI / 2);
     ctx.drawImage(face, (canvas.height - targetFaceWidth) / 2, -canvas.width);
 
