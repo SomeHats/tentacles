@@ -1,0 +1,11 @@
+{
+    "$schema": "https://unpkg.com/wrangler@4.157.0/config-schema.json",
+    "name": "tentacles",
+    "compatibility_date": "2026-11-01",
+    "assets": {
+        // `npm run build` copies the site into dist/tentacles/, so that the file paths
+        // match the URLs under alex.dytry.ch/tentacles/.
+        "directory": "./dist"
+    },
+    "workers_dev": true
+}
