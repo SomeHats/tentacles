@@ -7,5 +7,6 @@
         // match the URLs under alex.dytry.ch/tentacles/.
         "directory": "./dist"
     },
+    "routes": [{ "pattern": "alex.dytry.ch/tentacles/*", "zone_name": "dytry.ch" }],
     "workers_dev": true
 }
